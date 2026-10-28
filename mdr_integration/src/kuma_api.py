@@ -13,7 +13,8 @@ class KUMA_API:
     INCIDENT_GET_PATH = "/incidents"
     INCIDENT_CREATE_PATH = "/incidents/create"
     INCIDENT_COMMENT_PATH = "/incidents/comment"
-    
+    ASSET_IMPORT_PATH = "/assets/import"
+
     def __init__(self, url, api_token, ssl_cert, api_version = 'v2.1'):
         self.url = url + '/api/' + api_version
         headers = {
@@ -91,5 +92,37 @@ class KUMA_API:
         }
         """
         url = self.url + self.INCIDENT_COMMENT_PATH
+        result = self.session.post(url = url, json = data)
+        return result
+
+    def import_assets(self, data: Dict[str, Any]):
+        """
+        Example
+        data = {
+            "assets": [
+                {
+                    "customFields": [
+                        {
+                            "id": "string",
+                            "name": "string",
+                            "value": "string"
+                        }
+                    ],
+                    "fqdn": [
+                        "string"
+                    ],
+                    "ipAddresses": [
+                        "string"
+                    ],
+                    "macAddresses": [
+                        "string"
+                    ]
+                }
+            ],
+            "tenantID": "string"
+        }
+        """
+        url = self.url + self.ASSET_IMPORT_PATH
+        print(url)
         result = self.session.post(url = url, json = data)
         return result

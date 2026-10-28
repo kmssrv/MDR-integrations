@@ -4,6 +4,8 @@ import glob
 import logging
 import json
 from typing import Optional, Dict, Any, List
+from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 
 from src.kuma_api import KUMA_API
 
@@ -79,10 +81,79 @@ class KUMA():
             if '-new_comment' in update_file:
                 if self.add_comment(read_file(update_file)):
                     self.set_update_as_processed(update_file)
+            if 'asset_export' in update_file:
+                if self.import_assets(read_file(update_file)):
+                    self.set_update_as_processed(update_file)
 
+    def import_assets(self, data):
+        MSK = ZoneInfo('Europe/Moscow')
+        kuma_assets = []
+        kuma_assets_to_import = {}
+        for asset in data:
+            first_seen = datetime.fromtimestamp(asset['first_seen'] / 1000, tz=MSK).strftime('%d.%m.%Y %H:%M:%S')
+            last_seen_dt = datetime.fromtimestamp(asset['last_seen'] / 1000, tz=MSK)
+            last_seen = last_seen_dt.strftime('%d.%m.%Y %H:%M:%S')
+            now = datetime.now(tz=MSK)
+            last_seen_hours = round((now - last_seen_dt).total_seconds() / 3600)
+            mdr_telemetry_lost_severity = ""
 
-    def import_assets(self):
-        pass
+            if 1 < last_seen_hours <= 3:
+                mdr_telemetry_lost_severity = "low"
+            if 3 < last_seen_hours <= 6:
+                mdr_telemetry_lost_severity = "medium"
+            if last_seen_hours > 6:
+                mdr_telemetry_lost_severity = "high"
+
+            customFields = [
+                {
+                    "name": "mdr_first_seen",
+                    "value": str(first_seen)
+                },
+                {
+                    "name": "mdr_last_seen",
+                    "value": str(last_seen)
+                },
+                {
+                    "name": "mdr_last_seen_hours",
+                    "value": str(last_seen_hours)
+                },
+                {
+                    "name": "mdr_telemetry_lost_severity",
+                    "value": str(mdr_telemetry_lost_severity)
+                },
+                {
+                    "name": "mdr_isolation",
+                    "value": str(asset["isolation"])
+                },
+                {
+                    "name": "mdr_status_reasons",
+                    "value": str(asset["status_reasons"])
+                },
+                {
+                    "name": "mdr_status",
+                    "value": str(asset["status"])
+                }
+
+            ]
+            kuma_asset = {
+                "customFields": customFields,
+                "fqdn": f'{asset["host_name"]}.{asset["domain"]}'
+            }
+            kuma_assets.append(kuma_asset)
+        kuma_assets_to_import["assets"] = kuma_assets
+        kuma_assets_to_import["tenantID"] = self.tenant_id
+        try:
+            response = self.api.import_assets(kuma_assets_to_import)
+            if response.status_code != 200:
+                self.logger.error(
+                    f"KUMA assets importing has been failed with status code {response.status_code}: {response.text}")
+                return False
+            self.logger.info(
+                f"KUMA assets importing has been created successfully: {response.json()['id']}: {response.json()['name']}")
+            return True
+        except Exception as e:
+            self.logger.exception(f'Assets import error: {str(e)}')
+        return False
 
 
     def create_incident(self, data):
@@ -265,7 +336,7 @@ class KUMA():
             
             if self.enable_asset and asset_timeout_cur <= 0:
                 self.logger.info('starting to import assets..')
-                self.import_assets()
+                self.process_updates()
                 self.logger.info('MDR assets are processed')
                 asset_timeout_cur = self.asset_timeout
             
