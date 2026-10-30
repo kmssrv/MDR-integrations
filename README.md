@@ -76,13 +76,13 @@
 
 `nano config.yml`
 
-`General settings -> client_id`
+`General settings -> client_id: <MDR Cliend ID>`
 
-`Modules settings -> kuma -> api_url: FQDN / IP адрес ядра KUMA либо localhost`
+`Modules settings -> kuma -> api_url: <FQDN / IP адрес ядра KUMA либо localhost>`
 
-`Modules settings -> kuma -> api_token: токен для работы с API KUMA`
+`Modules settings -> kuma -> api_token: <токен для работы с API KUMA>`
 
-`Modules settings -> kuma -> token_id: ID тенанта KUMA` 
+`Modules settings -> kuma -> token_id: <ID тенанта KUMA>` 
 
 `Modules settings -> mdr_sync -> modules -> asset -> enable: true`
 
