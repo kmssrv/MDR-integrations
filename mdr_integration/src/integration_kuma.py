@@ -144,13 +144,12 @@ class KUMA():
         kuma_assets_to_import["tenantID"] = self.tenant_id
         try:
             response = self.api.import_assets(kuma_assets_to_import)
-            self.logger.info(response.json())
             if response.status_code != 200:
                 self.logger.error(
-                    f"KUMA assets importing has been failed with status code {response.status_code}: {response.text}")
+                    f"KUMA assets importing has been failed with status code {response.status_code}: {response.text} {response.json()}")
                 return False
             self.logger.info(
-                f"KUMA assets importing has been created successfully: {response.json()['id']}: {response.json()['name']}")
+                f"KUMA assets importing has been created successfully: {response.json()}")
             return True
         except Exception as e:
             self.logger.exception(f'Assets import error: {str(e)}')

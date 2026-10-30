@@ -123,6 +123,5 @@ class KUMA_API:
         }
         """
         url = self.url + self.ASSET_IMPORT_PATH
-        print(url)
         result = self.session.post(url = url, json = data)
         return result
