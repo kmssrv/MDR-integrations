@@ -34,6 +34,57 @@
 
 ## Быстрый старт
 
-Установка и настройка срипта интеграции осуществляется на серверe KUMA Core.
+Ниже рассмотрен пример, когда скрипт работает на сервере с KUMA Core.
 
-cd /opt
+В зависимости ОС может потребоваться установка следующих пакетов:
+
+ - `yum install python3-pip`
+ - `yum install git`
+или
+
+ - `apt install python3-pip`
+ - `apt install git`
+
+На портале MDR:
+
+1. Сгенерировать client_id и refresh_token для работы с API MDR
+
+В веб-консоли KUMA:
+
+1. Сгенерировать токен для работы с API KUMA 
+2. Получить ID тенанта KUMA, активы которого будут обновляться.
+
+На сервере KUMA Core:
+
+1. Скопировать репозиторий проекта 
+
+`cd /opt/`
+
+`git clone https://github.com/kmssrv/MDR-integrations.git`
+
+2. Установить зависимости
+
+`cd /opt/MDR-integrations/`
+`pip install -r requirements.txt`
+
+3. Настроить параметры интеграции
+
+`cd /opt/MDR-integrations/mdr_integration/conf/`
+
+`cp sample_config.yml config.yml`
+
+`nano config.yml`
+
+`General settings -> client_id`
+
+`Modules settings -> kuma -> api_url: FQDN / IP адрес ядра KUMA либо localhost`
+
+`Modules settings -> kuma -> api_token: токен для работы с API KUMA`
+
+`Modules settings -> kuma -> token_id: ID тенанта KUMA` 
+
+`Modules settings -> mdr_sync -> modules -> asset -> enable: true`
+
+4. Скопировать `refresh_token`, полученный на портале MDR, в файл `/opt/MDR-integrations/mdr_integration/conf/.refresh_token`
+
+`nano .refresh_token`

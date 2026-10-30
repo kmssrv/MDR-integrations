@@ -173,6 +173,7 @@ class KUMA():
         
         try:
             response = self.api.create_incident(incident_data)
+            self.logger.info(response.json())
             if response.status_code != 200:
                 self.logger.error(f"KUMA incident creation has been failed with status code {response.status_code}: {response.text}")
                 return False
