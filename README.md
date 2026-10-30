@@ -40,6 +40,7 @@
 
  - `yum install python3-pip`
  - `yum install git`
+ - 
 или
 
  - `apt install python3-pip`
