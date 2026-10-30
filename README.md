@@ -48,16 +48,16 @@
 
 На портале MDR:
 
-1. Сгенерировать client_id и refresh_token для работы с API MDR
+1. Сгенерировать client_id и refresh_token для работы с API MDR.
 
 В веб-консоли KUMA:
 
-1. Сгенерировать токен для работы с API KUMA 
+1. Сгенерировать токен для работы с API KUMA.
 2. Получить ID тенанта KUMA, активы которого будут обновляться.
 
 На сервере KUMA Core:
 
-1. Скопировать репозиторий проекта 
+1. Скопировать репозиторий проекта
 
 `cd /opt/`
 
@@ -86,6 +86,6 @@
 
 `Modules settings -> mdr_sync -> modules -> asset -> enable: true`
 
-4. Скопировать `refresh_token`, полученный на портале MDR, в файл `/opt/MDR-integrations/mdr_integration/conf/.refresh_token`
+4. Скопировать refresh_token, полученный на портале MDR, в файл /opt/MDR-integrations/mdr_integration/conf/.refresh_token
 
 `nano .refresh_token`
