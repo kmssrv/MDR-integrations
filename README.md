@@ -66,6 +66,7 @@
 2. Установить зависимости
 
 `cd /opt/MDR-integrations/`
+
 `pip install -r requirements.txt`
 
 3. Настроить параметры интеграции
@@ -76,7 +77,7 @@
 
 `nano config.yml`
 
-`General settings -> client_id: <MDR Cliend ID>`
+`General settings -> client_id: <MDR Client ID>`
 
 `Modules settings -> kuma -> api_url: <FQDN / IP адрес ядра KUMA либо localhost>`
 
