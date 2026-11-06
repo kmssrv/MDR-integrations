@@ -69,21 +69,23 @@
 
 `pip install -r requirements.txt`
 
-В некоторых версиях Debian/Ubuntu может возникать ошибка
-`externally-managed-environment`
-В этом случае необходимо создать виртуальное окружение.
+В некоторых версиях Debian/Ubuntu может возникать ошибка externally-managed-environment. В этом случае необходимо создать виртуальное окружение.
 
 Установить модуль venv, если его нет
+
 `apt install python3-venv`
 
 Создать виртуальное окружение в директории /opt/MDR-integrations/
+
 `python3 -m venv venv`
 
 Активировать окружение
+
 `source venv/bin/activate`
 
 Теперь pip будет работать внутри окружения
-pip install -r requirements.txt
+
+`pip install -r requirements.txt`
 
 3. Настроить параметры интеграции
 
