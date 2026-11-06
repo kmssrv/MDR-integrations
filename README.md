@@ -69,7 +69,29 @@
 
 `pip install -r requirements.txt`
 
+В некоторых версиях Debian/Ubuntu может возникать ошибка
+`externally-managed-environment`
+В этом случае необходимо создать виртуальное окружение.
+
+Установить модуль venv, если его нет
+`apt install python3-venv`
+
+Создать виртуальное окружение в директории /opt/MDR-integrations/
+`python3 -m venv venv`
+
+Активировать окружение
+`source venv/bin/activate`
+
+Теперь pip будет работать внутри окружения
+pip install -r requirements.txt
+
 3. Настроить параметры интеграции
+
+Узнать Tenant ID KUMA
+
+`curl -k -H "Authorization: Bearer <API_TOKEN_KUMA>" https://localahost:7223/api/v3/tenants`
+
+Заполнить файл конфигурации
 
 `cd /opt/MDR-integrations/mdr_integration/conf/`
 
@@ -90,3 +112,16 @@
 4. Скопировать refresh_token, полученный на портале MDR, в файл /opt/MDR-integrations/mdr_integration/conf/.refresh_token
 
 `nano .refresh_token`
+
+5. Проверочный запуск скрипта
+
+`python3 /opt/MDR-integrations/mdr_integration/main.py`
+
+В результате работы скрипта в директории /opt/MDR-integrations/mdr_integration/data будет создан файл 0_asset_export.json c данными об активах, полученных с портала MDR.
+
+Убедиться, что в логе скрипта нет ошибок, препятствующих корректной синхронизации между MDR и KUMA /opt/MDR-integrations/mdr_integration/log/app.log
+
+6. Перевести работу скрипта в постоянный режим одним из способов
+
+- Запуск скрипта в фоне и использование cron для автозапуска https://support.kaspersky.ru/kuma/4.6/304757
+- Создание и настройка сервиса https://github.com/klsecservices/MDR-integrations#run-util-as-a-service
