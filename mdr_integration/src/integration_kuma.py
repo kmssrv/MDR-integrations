@@ -137,7 +137,8 @@ class KUMA():
             ]
             kuma_asset = {
                 "customFields": customFields,
-                "fqdn": f'{asset["host_name"]}.{asset["domain"]}'
+                "fqdn": f'{asset["host_name"]}.{asset["domain"]}',
+                "name": f'{asset["host_name"]}'
             }
             kuma_assets.append(kuma_asset)
         kuma_assets_to_import["assets"] = kuma_assets
