@@ -142,6 +142,10 @@ class KUMA():
             kuma_assets.append(kuma_asset)
         kuma_assets_to_import["assets"] = kuma_assets
         kuma_assets_to_import["tenantID"] = self.tenant_id
+
+        self.logger.info(f"Assets from MDR:\n{data}")
+        self.logger.info(f"Assets prepared to import to KUMA:\n{ kuma_assets_to_import}")
+
         try:
             response = self.api.import_assets(kuma_assets_to_import)
             if response.status_code != 200:
@@ -149,7 +153,7 @@ class KUMA():
                     f"KUMA assets importing has been failed with status code {response.status_code}: {response.text} {response.json()}")
                 return False
             self.logger.info(
-                f"KUMA assets importing has been created successfully: {response.json()}")
+                f"KUMA assets has been imported successfully: {response.json()}")
             return True
         except Exception as e:
             self.logger.exception(f'Assets import error: {str(e)}')
