@@ -82,8 +82,7 @@ class KUMA():
                 if self.add_comment(read_file(update_file)):
                     self.set_update_as_processed(update_file)
             if 'asset_export' in update_file:
-                if self.import_assets(read_file(update_file)):
-                    self.set_update_as_processed(update_file)
+                self.import_assets(read_file(update_file))
 
     def import_assets(self, data):
         MSK = ZoneInfo('Europe/Moscow')
