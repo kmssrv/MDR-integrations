@@ -197,6 +197,7 @@ class MDRSync():
         kwargs = {
             'page_size': page_size,
             'page': first_page,
+            'version': 2,
             **self.asset_filter
         }
         assets = []
@@ -215,6 +216,7 @@ class MDRSync():
 
     def parse_assets(self, assets_list):
         assets = []
+        print(assets_list)
         for asset in assets_list:
             if self.asset_output_format == 'csv':
 
