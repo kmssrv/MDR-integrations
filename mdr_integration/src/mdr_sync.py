@@ -213,11 +213,9 @@ class MDRSync():
         self.parse_assets(assets)
         return
 
-
     def parse_assets(self, assets_list):
         assets = []
-        print(json.dumps(assets_list))
-
+        # print(json.dumps(assets_list))
         """
         Example asset api v2
         {
@@ -352,8 +350,8 @@ class MDRSync():
                 assets_tmp += '\n'
                 assets_tmp += ';'.join([ f'"{asset[header]}"' for header in headers ])
             assets = assets_tmp
-        asset_import_time = int(time.time()*1000)
-        #asset_import_time = 0
+        #asset_import_time = int(time.time()*1000)
+        asset_import_time = 0
         self.push_updates(update_type = 'asset_export', timestamp = asset_import_time, data = assets, file_extension = self.asset_output_format)
 
 
