@@ -106,7 +106,7 @@ class KUMA():
                 mdr_telemetry_lost_severity = "medium"
             if last_seen_hours > 6:
                 mdr_telemetry_lost_severity = "high"
-            print(json.dumps(asset))
+            #print(json.dumps(asset))
 
             """
             api v1
