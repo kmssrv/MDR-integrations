@@ -216,7 +216,7 @@ class MDRSync():
 
     def parse_assets(self, assets_list):
         assets = []
-        print(json.dump(assets_list))
+        print(json.dumps(assets_list))
         for asset in assets_list:
             if self.asset_output_format == 'csv':
 
