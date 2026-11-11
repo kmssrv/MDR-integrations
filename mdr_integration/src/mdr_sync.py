@@ -344,6 +344,7 @@ class MDRSync():
                 **network_interfaces
             })
 
+        # need to edit headers for api v2
         if self.asset_output_format == 'csv':
             headers = ['asset_id','host_name','domain','first_seen','last_seen','os_version','installed_product_info','ksc_host_id','tenant_name','isolation','status','status_reasons','network_interfaces_dsc','network_interfaces_dnsd','network_interfaces_defg','network_interfaces_mac','network_interfaces_ipcm','network_interfaces_ipv4','network_interfaces_ipv6']
             assets_tmp = ';'.join(headers)
@@ -351,8 +352,8 @@ class MDRSync():
                 assets_tmp += '\n'
                 assets_tmp += ';'.join([ f'"{asset[header]}"' for header in headers ])
             assets = assets_tmp
-        #asset_import_time = int(time.time()*1000)
-        asset_import_time = 0
+        asset_import_time = int(time.time()*1000)
+        #asset_import_time = 0
         self.push_updates(update_type = 'asset_export', timestamp = asset_import_time, data = assets, file_extension = self.asset_output_format)
 
 
