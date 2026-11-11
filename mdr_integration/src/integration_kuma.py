@@ -90,6 +90,10 @@ class KUMA():
         kuma_assets_to_import = {}
         for asset in data:
             first_seen = datetime.fromtimestamp(asset['first_seen'] / 1000, tz=MSK).strftime('%d.%m.%Y %H:%M:%S')
+
+            # api v2
+            protection_issues_last_seen = datetime.fromtimestamp(asset['protection_issues_last_seen'] / 1000, tz=MSK).strftime('%d.%m.%Y %H:%M:%S')
+
             last_seen_dt = datetime.fromtimestamp(asset['last_seen'] / 1000, tz=MSK)
             last_seen = last_seen_dt.strftime('%d.%m.%Y %H:%M:%S')
             now = datetime.now(tz=MSK)
@@ -103,6 +107,9 @@ class KUMA():
             if last_seen_hours > 6:
                 mdr_telemetry_lost_severity = "high"
             print(json.dumps(asset))
+
+            """
+            api v1
             customFields = [
                 {
                     "name": "mdr_first_seen",
@@ -134,6 +141,55 @@ class KUMA():
                 }
 
             ]
+            """
+            # api v2
+            customFields = [
+                {
+                    "name": "mdr_first_seen",
+                    "value": str(first_seen)
+                },
+                {
+                    "name": "mdr_last_seen",
+                    "value": str(last_seen)
+                },
+                {
+                    "name": "mdr_last_seen_hours",
+                    "value": str(last_seen_hours)
+                },
+                {
+                    "name": "mdr_telemetry_lost_severity",
+                    "value": str(mdr_telemetry_lost_severity)
+                },
+                {
+                    "name": "mdr_isolation",
+                    "value": str(asset["isolation"])
+                },
+                {
+                    "name": "mdr_status",
+                    "value": str(asset["status"])
+                },
+                {
+                    "name": "protection_issues_status",
+                    "value": str(asset["protection_issues_status"])
+                },
+                {
+                    "name": "protection_issues_reasons",
+                    "value": str(asset["protection_issues_reasons"])
+                },
+                {
+                    "name": "protection_issues_additional_problems",
+                    "value": str(asset["protection_issues_additional_problems"])
+                },
+                {
+                    "name": "protection_issues_last_seen",
+                    "value": str(asset["protection_issues_last_seen"])
+                },
+                {
+                    "name": "protection_issues_hours",
+                    "value": str(asset["protection_issues_hours"])
+                }
+            ]
+
             kuma_asset = {
                 "customFields": customFields,
                 "fqdn": f'{asset["host_name"]}.{asset["domain"]}',
