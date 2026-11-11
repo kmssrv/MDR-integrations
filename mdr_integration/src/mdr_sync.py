@@ -217,6 +217,65 @@ class MDRSync():
     def parse_assets(self, assets_list):
         assets = []
         print(json.dumps(assets_list))
+
+        """
+        Example asset api v2
+        {
+            "asset_id": "0xDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD",
+            "host_name": "KGRT01",
+            "network_interfaces": [
+                {
+                    "dsc": "Cisco AnyConnect Virtual Miniport Adapter for Windows x64",
+                    "defg": "0:0:0:0:0:0:0:0",
+                    "mac": "00:00:00:00:00:00",
+                    "ipcm": "1",
+                    "ip": "10.0.0.2|FE80:0:0:0:80FB:80FB:80FB:80FB|FE80:0:0:0:80FB:80FB:80FB:80FB",
+                    "dnsd": ""
+                },
+                {
+                    "dsc": "Microsoft Wi-Fi Direct Virtual Adapter",
+                    "mac": "00:00:00:00:00:00",
+                    "ipcm": "25",
+                    "ip": "169.0.0.2|FE80:0:0:0:80FB:80FB:80FB:80FB",
+                    "dnsd": "",
+                    "defg": ""
+                }
+            ],
+            "domain": "kogorta.lab",
+            "first_seen": 1794291833000,
+            "last_seen": 1794335904000,
+            "os_version": "Windows 10 22H2 Professional x64",
+            "installed_product_info": "KES 14.0.0.504",
+            "product_map": {
+                "KES": {
+                    "last_seen": 1794335904000,
+                    "version": "14.0.0.504"
+                }
+            },
+            "ksc_host_id": "95e70173-0118-4db1-883b-6509086565f9",
+            "tenant_name": "KOGORTA",
+            "isolation": false,
+            "isolation_task_id": "",
+            "status": "OK",
+            "mdr_license_id": "95e70173-0118-4db1-883b-6509086565f9",
+            "related_incidents_count": 0,
+            "protection_issues": {
+                "status": "OK",
+                "reasons": [],
+                "additional_problems": [],
+                "last_seen": 1794337200000,
+                "hours": 0
+            },
+            "protection_issues_integral": {
+                "status": "OK",
+                "reasons": [],
+                "additional_problems": [],
+                "last_seen": 0,
+                "hours": 72
+            }
+        }
+        """
+
         for asset in assets_list:
             if self.asset_output_format == 'csv':
 
@@ -260,7 +319,14 @@ class MDRSync():
                 'tenant_name': asset['tenant_name'],
                 'isolation': asset['isolation'],
                 'status': asset['status'],
-                'status_reasons': '|'.join(asset['status_reasons']),
+                # api v1 status_reasons
+                #'status_reasons': '|'.join(asset['status_reasons']),
+                # api v2 protection_issues
+                'protection_issues_status': '|'.join(asset['protection_issues_status']),
+                'protection_issues_reasons': asset['protection_issues_'],
+                'protection_issues_additional_problems': asset['protection_issues_additional_problems'],
+                'protection_issues_last_seen': asset['protection_issues_last_seen'],
+                'protection_issues_hours': asset['protection_issues_hours'],
                 **network_interfaces
             })
 
