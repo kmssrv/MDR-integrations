@@ -260,18 +260,18 @@ class MDRSync():
             "mdr_license_id": "95e70173-0118-4db1-883b-6509086565f9",
             "related_incidents_count": 0,
             "protection_issues": {
-                "status": "OK",
-                "reasons": [],
-                "additional_problems": [],
-                "last_seen": 1794337200000,
-                "hours": 0
-            },
-            "protection_issues_integral": {
-                "status": "OK",
-                "reasons": [],
+                "status": "OFFLINE",
+                "reasons": [
+                    {
+                        "code": "NO_TELEMETRY_MORE_THAN_X_DAYS",
+                        "args": {
+                            "days": 2
+                        }
+                    }
+                ],
                 "additional_problems": [],
                 "last_seen": 0,
-                "hours": 72
+                "hours": 0
             }
         }
         """
@@ -307,6 +307,20 @@ class MDRSync():
                 }
             else:
                 raise KeyError(f'{self.asset_output_format} is not correct format: "json" or "csv" are only allowed')
+
+            # # api v2 protection_issues_reasons
+            parts = []
+            for reason in asset['protection_issues']['reasons']:
+                code = reason.get('code', '')
+                args = reason.get('args') or {}
+                if args:
+                    arg_str = ', '.join(f'{k}={v}' for k, v in args.items())
+                    parts.append(f'{code} ({arg_str})')
+                else:
+                    parts.append(code)
+
+            reason_str = '|'.join(parts)
+
             assets.append({
                 'asset_id': asset['asset_id'],
                 'host_name': asset['host_name'],
@@ -323,7 +337,7 @@ class MDRSync():
                 #'status_reasons': '|'.join(asset['status_reasons']),
                 # api v2 protection_issues
                 'protection_issues_status': asset['protection_issues']['status'],
-                'protection_issues_reasons': '|'.join(asset['protection_issues']['reasons']),
+                'protection_issues_reasons': reason_str,
                 'protection_issues_additional_problems': asset['protection_issues']['additional_problems'],
                 'protection_issues_last_seen': asset['protection_issues']['last_seen'],
                 'protection_issues_hours': asset['protection_issues']['hours'],
