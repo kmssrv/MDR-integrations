@@ -322,11 +322,11 @@ class MDRSync():
                 # api v1 status_reasons
                 #'status_reasons': '|'.join(asset['status_reasons']),
                 # api v2 protection_issues
-                'protection_issues_status': '|'.join(asset['protection_issues_status']),
-                'protection_issues_reasons': asset['protection_issues_'],
-                'protection_issues_additional_problems': asset['protection_issues_additional_problems'],
-                'protection_issues_last_seen': asset['protection_issues_last_seen'],
-                'protection_issues_hours': asset['protection_issues_hours'],
+                'protection_issues_status': asset['protection_issues']['status'],
+                'protection_issues_reasons': '|'.join(asset['protection_issues']['reasons']),
+                'protection_issues_additional_problems': asset['protection_issues']['problems'],
+                'protection_issues_last_seen': asset['protection_issues']['last_seen'],
+                'protection_issues_hours': asset['protection_issues']['hours'],
                 **network_interfaces
             })
 
